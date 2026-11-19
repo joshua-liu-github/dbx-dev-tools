@@ -2,9 +2,9 @@
 
 [English](./README.md) | [中文](./README-zh.md)
 
-A collection of everyday developer utilities as a [DBX](https://github.com/t8y2/dbx) plugin — **runs offline in a sandbox with zero network calls**. 48 developer utilities in under 200KB: an all-in-one toolkit covering crypto & security, encoding, text & regex, time & Cron, network & DevOps, and frontend assets—built for everyday development needs. Pure frontend, universal package, no native sidecar.
+A collection of everyday developer utilities as a [DBX](https://github.com/t8y2/dbx) plugin — **runs offline in a sandbox with zero network calls**. 50 developer utilities in under 220KB: an all-in-one toolkit covering crypto & security, encoding, text & regex, time & Cron, network & DevOps, and frontend assets—built for everyday development needs. Pure frontend, universal package, no native sidecar.
 
-![DBX >=0.6.19](https://img.shields.io/badge/DBX-%3E%3D0.6.19-blue) ![Platform universal](https://img.shields.io/badge/platform-universal-green) ![44 tools](https://img.shields.io/badge/tools-48-orange) ![package <200KB](https://img.shields.io/badge/package-<200KB-brightgreen) ![permissions: host.storage, host.workbench](https://img.shields.io/badge/permissions-host.storage%20%2B%20host.workbench-blueviolet)
+![DBX >=0.6.19](https://img.shields.io/badge/DBX-%3E%3D0.6.19-blue) ![Platform universal](https://img.shields.io/badge/platform-universal-green) ![50 tools](https://img.shields.io/badge/tools-50-orange) ![package <220KB](https://img.shields.io/badge/package-<220KB-brightgreen) ![permissions: host.storage, host.workbench](https://img.shields.io/badge/permissions-host.storage%20%2B%20host.workbench-blueviolet)
 
 <img width="2086" height="1404" alt="image" src="https://github.com/user-attachments/assets/704901ab-eb26-4794-a62d-366b41360609" />
 
@@ -47,6 +47,8 @@ A collection of everyday developer utilities as a [DBX](https://github.com/t8y2/
 - **Semver Compare** — compare two versions and sort version lists per semver.org rules (prerelease-aware)
 - **Image Compressor** — re-encode to WebP/JPEG/PNG with quality slider, before/after size preview
 - **RSA Key Generator** — RSA key pairs (RSASSA / RSA-PSS / RSA-OAEP, 2048–4096 bits) exported as PEM/PKCS#8
+- **SM2 / SM3 / SM4** — Chinese national crypto: SM2 key pairs (Hex/Base64/PEM — PKCS#8, SPKI, SEC1), encrypt/decrypt with C1C3C2 or C1C2C3 order and optional `04` prefix, sign/verify (raw or DER, custom userId); SM3 hash & HMAC; SM4 ECB/CBC with PKCS#7 or no padding and text/hex/Base64 I/O
+- **SM2 + SM4 Hybrid Encryption** — envelope encryption: random per-message SM4 key + IV, SM2-wrapped key material, HMAC-SM3 integrity tag, JSON envelope
 - **Certificate Decoder** — parse X.509 PEM/DER: subject/issuer, validity, SAN, key usage, SHA-1/256 fingerprints
 - **IP Calculator** — IPv4 subnet math (network/broadcast/usable hosts/mask/wildcard/scope/PTR) with subnet splitting; IPv6 compress/expand, prefix, type detection, ip6.arpa PTR
 - **Cron Expression** — standard 5-field cron explained in words, with next-run preview

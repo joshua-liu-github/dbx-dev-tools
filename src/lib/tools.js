@@ -29,6 +29,8 @@ import RegexTool from "../tools/RegexTool.svelte";
 import SemverTool from "../tools/SemverTool.svelte";
 import ImageCompTool from "../tools/ImageCompTool.svelte";
 import RsaTool from "../tools/RsaTool.svelte";
+import SmTool from "../tools/SmTool.svelte";
+import SmHybridTool from "../tools/SmHybridTool.svelte";
 import CertTool from "../tools/CertTool.svelte";
 import IpTool from "../tools/IpTool.svelte";
 import CronTool from "../tools/CronTool.svelte";
@@ -74,6 +76,8 @@ export const TOOLS = [
   { key: "jwt", contributionId: "terry.devtools.jwt", component: JwtTool, tags: ["security", "parser", "token"] },
   { key: "aes", contributionId: "terry.devtools.aes", component: AesTool, tags: ["security", "crypto"] },
   { key: "rsa", contributionId: "terry.devtools.rsa", component: RsaTool, tags: ["generator", "security", "crypto", "key"] },
+  { key: "sm", contributionId: "terry.devtools.sm", component: SmTool, tags: ["security", "crypto", "chinese", "sm", "sm2", "sm3", "sm4"] },
+  { key: "smhybrid", contributionId: "terry.devtools.smhybrid", component: SmHybridTool, tags: ["security", "crypto", "chinese", "sm", "sm2", "sm4", "hybrid"] },
   { key: "cert", contributionId: "terry.devtools.cert", component: CertTool, tags: ["security", "parser", "certificate", "x509", "pem"] },
   { key: "totp", contributionId: "terry.devtools.totp", component: TotpTool, tags: ["security", "totp", "otp", "2fa"] },
   { key: "json", contributionId: "terry.devtools.json", component: JsonTool, tags: ["parser", "formatter", "text", "json"] },

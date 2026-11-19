@@ -2,9 +2,9 @@
 
 [English](./README.md) | [中文](./README-zh.md)
 
-日常开发工具集合的 [DBX](https://github.com/t8y2/dbx) 插件——**沙箱离线运行，零联网**。48 款开发工具仅 <200KB：集安全加解密、编解码与转义、文本与正则排版、时间与 Cron 计算、网络与系统运维、前端图像与标识生成等全场景工具于一体，满足日常开发高频需求。纯前端实现、universal 包、无原生 Sidecar。
+日常开发工具集合的 [DBX](https://github.com/t8y2/dbx) 插件——**沙箱离线运行，零联网**。50 款开发工具仅 <220KB：集安全加解密、编解码与转义、文本与正则排版、时间与 Cron 计算、网络与系统运维、前端图像与标识生成等全场景工具于一体，满足日常开发高频需求。纯前端实现、universal 包、无原生 Sidecar。
 
-![DBX >=0.6.19](https://img.shields.io/badge/DBX-%3E%3D0.6.19-blue) ![Platform universal](https://img.shields.io/badge/platform-universal-green) ![44 个工具](https://img.shields.io/badge/工具-48-orange) ![安装包 <200KB](https://img.shields.io/badge/安装包-<200KB-brightgreen) ![权限 host.storage, host.workbench](https://img.shields.io/badge/权限-host.storage%20%2B%20host.workbench-blueviolet)
+![DBX >=0.6.19](https://img.shields.io/badge/DBX-%3E%3D0.6.19-blue) ![Platform universal](https://img.shields.io/badge/platform-universal-green) ![50 个工具](https://img.shields.io/badge/工具-50-orange) ![安装包 <220KB](https://img.shields.io/badge/安装包-<220KB-brightgreen) ![权限 host.storage, host.workbench](https://img.shields.io/badge/权限-host.storage%20%2B%20host.workbench-blueviolet)
 
 <img width="2090" height="1412" alt="image" src="https://github.com/user-attachments/assets/7b43078d-d781-4e52-8449-9094872aba1e" />
 
@@ -47,6 +47,8 @@
 - **Semver 版本比较**：按 semver.org 规则比较两个版本号、排序版本列表（含预发布号）
 - **图片压缩转换**：重编码为 WebP/JPEG/PNG，质量滑杆可调，前后体积对比
 - **RSA 密钥生成器**：RSA 密钥对（RSASSA / RSA-PSS / RSA-OAEP，2048–4096 位）导出 PEM/PKCS#8
+- **国密加解密（SM2/SM3/SM4）**：SM2 密钥对（Hex/Base64/PEM——PKCS#8、SPKI、SEC1），支持 C1C3C2 / C1C2C3 密文顺序、可选 `04` 前缀的加解密，原始 / DER 签名验签（可自定义 userId）；SM3 摘要与 HMAC；SM4 支持 ECB/CBC、PKCS#7 或无填充，文本 / Hex / Base64 输入输出
+- **SM2 + SM4 混合加密（信封）**：每次生成随机 SM4 密钥与 IV，密钥材料经 SM2 封装，HMAC-SM3 完整性校验，输出 JSON 信封
 - **证书解析器**：解析 X.509 PEM/DER 证书：主体/签发者、有效期、SAN、密钥用途、SHA-1/256 指纹
 - **IP 计算器**：IPv4 子网计算（网络/广播/可用主机/掩码/反掩码/范围属性/PTR）与子网划分；IPv6 压缩/展开、前缀、类型识别、ip6.arpa 反解
 - **Cron 表达式**：标准五段式 Cron 的人话描述，预览接下来的执行时间
