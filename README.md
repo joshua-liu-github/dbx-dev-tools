@@ -42,13 +42,13 @@ A collection of everyday developer utilities as a [DBX](https://github.com/t8y2/
 - **CSS Generator** — visual gradient (linear/radial/conic, multi-stop) and box-shadow builders with live preview and copyable CSS
 - **Line Operations** — trim, remove empty, dedupe, sort A→Z/Z→A, add line numbers, reverse — combined in a fixed pipeline
 - **AES Encrypt / Decrypt** — PBKDF2 (100k, SHA-256) → AES-256-GCM; output is `base64(salt|iv|ciphertext)`, GCM tag rejects wrong passwords
-- **PBE (PBEWithMD5AndDES)** — PBKDF1 (MD5) + DES-CBC + PKCS#5 password encryption, byte-compatible with Java `PBEWithMD5AndDES`; selectable Java low-8-bit or UTF-8 password encoding, 8-byte salt, configurable iterations
+- **PBE (PBEWithMD5AndDES)** — PBKDF1 (MD5) + DES-CBC + PKCS#5 password encryption, byte-compatible with Java `PBEWithMD5AndDES`; selectable Java low-8-bit or UTF-8 password encoding, 8-byte salt, configurable iterations, plus a jasypt mode for `Base64(salt | ciphertext)` tokens
 - **Chmod Calculator** — owner/group/other rwx checkboxes ⇄ octal, live symbolic (`rwxr-xr-x`), common presets
 - **Regex Tester** — pattern + flags, highlighted match preview, capture-group table, replace preview
 - **Semver Compare** — compare two versions and sort version lists per semver.org rules (prerelease-aware)
 - **Image Compressor** — re-encode to WebP/JPEG/PNG with quality slider, before/after size preview
 - **RSA Key Generator** — RSA key pairs (RSASSA / RSA-PSS / RSA-OAEP, 2048–4096 bits) exported as PEM/PKCS#8
-- **SM2 / SM3 / SM4** — Chinese national crypto: SM2 key pairs (Hex/Base64/PEM — PKCS#8, SPKI, SEC1), encrypt/decrypt with C1C3C2 or C1C2C3 order and optional `04` prefix, sign/verify (raw or DER, custom userId); SM3 hash & HMAC; SM4 ECB/CBC with PKCS#7 or no padding and text/hex/Base64 I/O
+- **SM2 / SM3 / SM4** — Chinese national crypto: SM2 key pairs (Hex, Base64 DER, PEM — PKCS#8, SPKI, SEC1), encrypt/decrypt with C1C3C2 or C1C2C3 order and optional `04` prefix, sign/verify (raw or DER, custom userId); SM3 hash & HMAC; SM4 ECB/CBC with PKCS#7 or no padding and text/hex/Base64 I/O
 - **SM2 + SM4 Hybrid Encryption** — envelope encryption: random per-message SM4 key + IV, SM2-wrapped key material, HMAC-SM3 integrity tag, JSON envelope
 - **JSJ Request Signer (Sm-Token)** — Sm-Token request signing: SM3 over sorted parameters, request body and request URI
 - **JSJ SM2 + SM4 Encrypted Body** — mixed encryption for request bodies: SM2-wrapped SM4 key in `cr-ca-key`, payload encrypted with SM4-CBC/PKCS7 (IV = key) into `encData`

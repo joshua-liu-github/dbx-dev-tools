@@ -128,9 +128,49 @@ export function pbeEncrypt(plaintext, password, saltText, iterations, opts = {})
   const { passwordMode = "java", saltEncoding = "hex", outEncoding = "hex" } = opts;
   const salt = parseSalt(saltText, saltEncoding);
   const rounds = parseIterations(iterations);
+  return encodeBytes(encryptBytes(plaintext, password, salt, rounds, passwordMode), outEncoding);
+}
+
+function concatBytes(...parts) {
+  const out = new Uint8Array(parts.reduce((n, p) => n + p.length, 0));
+  let off = 0;
+  for (const p of parts) {
+    out.set(p, off);
+    off += p.length;
+  }
+  return out;
+}
+
+function decryptBytes(cipher, password, salt, rounds, passwordMode) {
+  const { key, iv } = derive(password, salt, rounds, passwordMode);
+  const plain = unpad(desCrypt(cipher, key, iv, "decrypt"));
+  try {
+    return new TextDecoder("utf-8", { fatal: true }).decode(plain);
+  } catch {
+    throw new PbeError("badUtf8");
+  }
+}
+
+function encryptBytes(plaintext, password, salt, rounds, passwordMode) {
   const { key, iv } = derive(password, salt, rounds, passwordMode);
   const data = pad(new TextEncoder().encode(String(plaintext)));
-  return encodeBytes(desCrypt(data, key, iv, "encrypt"), outEncoding);
+  return desCrypt(data, key, iv, "encrypt");
+}
+
+// jasypt StandardPBEStringEncryptor default output: Base64(salt(8) || DES-CBC
+// ciphertext) with a fresh random salt per message and 1000 KDF iterations.
+export function jasyptEncrypt(plaintext, password, { passwordMode = "java", iterations = 1000 } = {}) {
+  const rounds = parseIterations(iterations);
+  const salt = crypto.getRandomValues(new Uint8Array(SALT_BYTES));
+  return bytesToB64(concatBytes(salt, encryptBytes(plaintext, password, salt, rounds, passwordMode)));
+}
+
+export function jasyptDecrypt(cipherText, password, { passwordMode = "java", iterations = 1000 } = {}) {
+  const raw = b64ToBytes(cipherText);
+  if (raw.length <= SALT_BYTES || (raw.length - SALT_BYTES) % 8) throw new PbeError("badCipher");
+  const rounds = parseIterations(iterations);
+  const salt = raw.slice(0, SALT_BYTES);
+  return decryptBytes(raw.slice(SALT_BYTES), password, salt, rounds, passwordMode);
 }
 
 export function pbeDecrypt(cipherText, password, saltText, iterations, opts = {}) {
@@ -144,11 +184,5 @@ export function pbeDecrypt(cipherText, password, saltText, iterations, opts = {}
     throw new PbeError("badEncoding");
   }
   if (!cipher.length || cipher.length % 8) throw new PbeError("badCipher");
-  const { key, iv } = derive(password, salt, rounds, passwordMode);
-  const plain = unpad(desCrypt(cipher, key, iv, "decrypt"));
-  try {
-    return new TextDecoder("utf-8", { fatal: true }).decode(plain);
-  } catch {
-    throw new PbeError("badUtf8");
-  }
+  return decryptBytes(cipher, password, salt, rounds, passwordMode);
 }

@@ -2,7 +2,7 @@
   import ToolShell from "../components/ToolShell.svelte";
   import CopyButton from "../components/CopyButton.svelte";
   import {
-    PbeError, pbeEncrypt, pbeDecrypt, randomSaltHex,
+    PbeError, pbeEncrypt, pbeDecrypt, jasyptEncrypt, jasyptDecrypt, randomSaltHex,
     hexToBytes, bytesToHex, b64ToBytes, bytesToB64,
   } from "../lib/pbe.js";
   import { t, onLangChange } from "../lib/i18n.js";
@@ -14,6 +14,7 @@
   const p = $derived(s.pbe);
 
   let mode = $state("enc"); // "enc" | "dec"
+  let format = $state("std"); // "std" | "jasypt"
   let password = $state("");
   let passwordMode = $state("java"); // "java" | "utf8"
   let salt = $state(randomSaltHex());
@@ -66,18 +67,32 @@
     salt = saltEnc === "base64" ? bytesToB64(hexToBytes(hex)) : hex;
   }
 
+  function changeFormat(next) {
+    if (next === format) return;
+    format = next;
+    output = "";
+    error = "";
+  }
+
   function run() {
     error = "";
     output = "";
     if (!input || !password) return;
+    const rounds = Number(iterations);
     try {
-      output = mode === "enc"
-        ? pbeEncrypt(input, password, salt, Number(iterations), {
-          passwordMode, saltEncoding: saltEnc, outEncoding: ctEnc,
-        })
-        : pbeDecrypt(input, password, salt, Number(iterations), {
-          passwordMode, saltEncoding: saltEnc, inEncoding: ctEnc,
-        });
+      if (mode === "enc") {
+        output = format === "jasypt"
+          ? jasyptEncrypt(input, password, { passwordMode, iterations: rounds })
+          : pbeEncrypt(input, password, salt, rounds, {
+            passwordMode, saltEncoding: saltEnc, outEncoding: ctEnc,
+          });
+      } else {
+        output = format === "jasypt"
+          ? jasyptDecrypt(input, password, { passwordMode, iterations: rounds })
+          : pbeDecrypt(input, password, salt, rounds, {
+            passwordMode, saltEncoding: saltEnc, inEncoding: ctEnc,
+          });
+      }
     } catch (e) {
       error = errText(e);
     }
@@ -86,9 +101,10 @@
   // Password, plaintext and ciphertext are secrets — only options and the
   // (non-secret) salt are remembered.
   persistState("pbe", {
-    get: () => ({ mode, passwordMode, salt, saltEnc, iterations, ctEnc }),
+    get: () => ({ mode, format, passwordMode, salt, saltEnc, iterations, ctEnc }),
     set: (v) => {
       mode = v.mode ?? mode;
+      format = v.format ?? format;
       passwordMode = v.passwordMode ?? passwordMode;
       salt = v.salt ?? salt;
       saltEnc = v.saltEnc ?? saltEnc;
@@ -117,33 +133,44 @@
     </div>
     <p class="hint">{p.pwdModeHint}</p>
 
-    <label class="dbx-label" for="pbe-salt">{p.salt}</label>
-    <div class="keyrow">
-      <input id="pbe-salt" class="dbx-input mono" bind:value={salt} spellcheck="false" />
-      <select class="dbx-input narrow" value={saltEnc} onchange={(e) => changeSaltEnc(e.currentTarget.value)}>
-        <option value="hex">{p.hex}</option>
-        <option value="base64">{p.base64}</option>
-      </select>
-      <button type="button" class="dbx-btn" onclick={generateSalt}>{p.generate}</button>
-    </div>
-
-    <div class="opts">
-      <label>{p.iterations}
-        <input class="dbx-input narrow" type="number" min="1" step="1" bind:value={iterations} />
-      </label>
-      <label>{p.cipherEncoding}
-        <select class="dbx-input narrow" bind:value={ctEnc}>
+    {#if format === "std"}
+      <label class="dbx-label" for="pbe-salt">{p.salt}</label>
+      <div class="keyrow">
+        <input id="pbe-salt" class="dbx-input mono" bind:value={salt} spellcheck="false" />
+        <select class="dbx-input narrow" value={saltEnc} onchange={(e) => changeSaltEnc(e.currentTarget.value)}>
           <option value="hex">{p.hex}</option>
           <option value="base64">{p.base64}</option>
         </select>
+        <button type="button" class="dbx-btn" onclick={generateSalt}>{p.generate}</button>
+      </div>
+    {/if}
+
+    <div class="opts">
+      <label>{p.format}
+        <select class="dbx-input narrow" value={format} onchange={(e) => changeFormat(e.currentTarget.value)}>
+          <option value="std">{p.fmtStd}</option>
+          <option value="jasypt">{p.fmtJasypt}</option>
+        </select>
       </label>
+      <label>{p.iterations}
+        <input class="dbx-input narrow" type="number" min="1" step="1" bind:value={iterations} />
+      </label>
+      {#if format === "std"}
+        <label>{p.cipherEncoding}
+          <select class="dbx-input narrow" bind:value={ctEnc}>
+            <option value="hex">{p.hex}</option>
+            <option value="base64">{p.base64}</option>
+          </select>
+        </label>
+      {/if}
     </div>
 
     <label class="dbx-label" for="pbe-in">{mode === "enc" ? p.plain : p.cipher}</label>
     {#if mode === "enc"}
       <textarea id="pbe-in" class="dbx-textarea mono" rows="5" bind:value={encIn} placeholder={p.plainHint} spellcheck="false"></textarea>
     {:else}
-      <textarea id="pbe-in" class="dbx-textarea mono" rows="5" bind:value={decIn} placeholder={p.cipherHint} spellcheck="false"></textarea>
+      <textarea id="pbe-in" class="dbx-textarea mono" rows="5" bind:value={decIn}
+        placeholder={format === "jasypt" ? p.jasyptCipherHint : p.cipherHint} spellcheck="false"></textarea>
     {/if}
 
     <div class="actions">
@@ -160,7 +187,7 @@
       <textarea class="dbx-textarea mono" rows="5" readonly value={output}></textarea>
     {/if}
 
-    <p class="hint">{mode === "enc" ? p.encHint : p.decHint}</p>
+    <p class="hint">{format === "jasypt" ? p.jasyptHint : mode === "enc" ? p.encHint : p.decHint}</p>
     {#if error}<p class="err">{error}</p>{/if}
   </div>
 </ToolShell>

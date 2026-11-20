@@ -222,7 +222,11 @@ export function parseSm2PrivateKey(text) {
     return { hex: normalizePrivate(hexToBytes(compact)), format: "hex" };
   }
   try {
-    return { hex: normalizePrivate(b64ToBytes(raw)), format: "base64" };
+    const bytes = b64ToBytes(raw);
+    // PKCS#8 / SEC1 DER is much longer than a raw 32-byte scalar. Raw
+    // Base64 scalars are still accepted for older tool output.
+    if (bytes.length > 64 && bytes[0] === 0x30) return { hex: parsePrivateDer(bytes), format: "base64" };
+    return { hex: normalizePrivate(bytes), format: "base64" };
   } catch {
     throw new SmError("badKey");
   }
@@ -241,13 +245,17 @@ export function parseSm2PublicKey(text) {
     return { hex: normalizePublic(hexToBytes(compact)), format: "hex" };
   }
   try {
-    return { hex: normalizePublic(b64ToBytes(raw)), format: "base64" };
+    const bytes = b64ToBytes(raw);
+    // SPKI DER is longer than a raw 64/65-byte point; keep accepting the
+    // latter for older tool output.
+    if (bytes.length > 66 && bytes[0] === 0x30) return { hex: parsePublicDer(bytes), format: "base64" };
+    return { hex: normalizePublic(bytes), format: "base64" };
   } catch {
     throw new SmError("badKey");
   }
 }
 
-function privatePem(privHex) {
+function privateDer(privHex) {
   const pubPoint = hexToBytes(sm2.getPublicKeyFromPrivateKey(privHex));
   const ecPrivate = derSeq(concatBytes(
     derInt(Uint8Array.of(1)),
@@ -255,22 +263,32 @@ function privatePem(privHex) {
     derCtx(0, derOid(OID_SM2)),
     derCtx(1, derBit(pubPoint)),
   ));
-  return pemEncode("PRIVATE KEY", derSeq(concatBytes(derInt(Uint8Array.of(0)), SM2_ALG_ID, derOctet(ecPrivate))));
+  return derSeq(concatBytes(derInt(Uint8Array.of(0)), SM2_ALG_ID, derOctet(ecPrivate)));
+}
+
+function publicDer(pubHex) {
+  return derSeq(concatBytes(SM2_ALG_ID, derBit(hexToBytes(pubHex))));
+}
+
+function privatePem(privHex) {
+  return pemEncode("PRIVATE KEY", privateDer(privHex));
 }
 
 function publicPem(pubHex) {
-  return pemEncode("PUBLIC KEY", derSeq(concatBytes(SM2_ALG_ID, derBit(hexToBytes(pubHex)))));
+  return pemEncode("PUBLIC KEY", publicDer(pubHex));
 }
 
 export function formatSm2PrivateKey(privHex, format = "hex") {
   if (format === "pem") return privatePem(privHex);
-  if (format === "base64") return bytesToB64(hexToBytes(privHex));
+  // Base64 is PKCS#8 DER (the PEM body): what Java/BouncyCastle key APIs take.
+  if (format === "base64") return bytesToB64(privateDer(privHex));
   return privHex;
 }
 
 export function formatSm2PublicKey(pubHex, format = "hex") {
   if (format === "pem") return publicPem(pubHex);
-  if (format === "base64") return bytesToB64(hexToBytes(pubHex));
+  // Base64 is SPKI DER (the PEM body) for Java/BouncyCastle interop.
+  if (format === "base64") return bytesToB64(publicDer(pubHex));
   return pubHex;
 }
 

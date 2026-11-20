@@ -42,13 +42,13 @@
 - **CSS 生成器**：可视化渐变（linear/radial/conic、多色标）与盒阴影生成，实时预览、一键复制 CSS
 - **文本行处理**：修剪、去空行、去重、A→Z/Z→A 排序、加行号、倒序——按固定流水线组合生效
 - **AES 加解密**：PBKDF2（10 万次，SHA-256）→ AES-256-GCM；输出 `base64(salt|iv|密文)`，GCM 标签可拒绝错误密码
-- **PBE 口令加密（PBEWithMD5AndDES）**：PBKDF1（MD5）+ DES-CBC + PKCS#5 口令加解密，与 Java `PBEWithMD5AndDES` 字节级兼容；口令字节可选 Java 低 8 位或 UTF-8，8 字节盐值，迭代次数可调
+- **PBE 口令加密（PBEWithMD5AndDES）**：PBKDF1（MD5）+ DES-CBC + PKCS#5 口令加解密，与 Java `PBEWithMD5AndDES` 字节级兼容；口令字节可选 Java 低 8 位或 UTF-8，盐值与迭代次数可调，并提供 jasypt 模式（读写 `Base64(盐 | 密文)` 串）
 - **chmod 计算器**：所有者/用户组/其他 rwx 勾选 ⇄ 八进制，实时符号表示（`rwxr-xr-x`），常用预设
 - **正则测试器**：表达式 + 标志位，匹配高亮预览、捕获组表格、替换预览
 - **Semver 版本比较**：按 semver.org 规则比较两个版本号、排序版本列表（含预发布号）
 - **图片压缩转换**：重编码为 WebP/JPEG/PNG，质量滑杆可调，前后体积对比
 - **RSA 密钥生成器**：RSA 密钥对（RSASSA / RSA-PSS / RSA-OAEP，2048–4096 位）导出 PEM/PKCS#8
-- **国密加解密（SM2/SM3/SM4）**：SM2 密钥对（Hex/Base64/PEM——PKCS#8、SPKI、SEC1），支持 C1C3C2 / C1C2C3 密文顺序、可选 `04` 前缀的加解密，原始 / DER 签名验签（可自定义 userId）；SM3 摘要与 HMAC；SM4 支持 ECB/CBC、PKCS#7 或无填充，文本 / Hex / Base64 输入输出
+- **国密加解密（SM2/SM3/SM4）**：SM2 密钥对（Hex、Base64 DER、PEM——PKCS#8、SPKI、SEC1），支持 C1C3C2 / C1C2C3 密文顺序、可选 `04` 前缀的加解密，原始 / DER 签名验签（可自定义 userId）；SM3 摘要与 HMAC；SM4 支持 ECB/CBC、PKCS#7 或无填充，文本 / Hex / Base64 输入输出
 - **SM2 + SM4 混合加密（信封）**：每次生成随机 SM4 密钥与 IV，密钥材料经 SM2 封装，HMAC-SM3 完整性校验，输出 JSON 信封
 - **JSJ 签名生成（Sm-Token）**：对排序后的参数、请求体与请求 URI 计算 SM3
 - **JSJ 国密混合加解密**：SM2 封装 SM4 密钥写入 `cr-ca-key`，请求体以 SM4-CBC/PKCS7（IV = 密钥）加密为 `encData`
