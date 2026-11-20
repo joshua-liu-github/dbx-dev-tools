@@ -2,9 +2,9 @@
 
 [English](./README.md) | [中文](./README-zh.md)
 
-日常开发工具集合的 [DBX](https://github.com/t8y2/dbx) 插件——**沙箱离线运行，零联网**。50 款开发工具仅 <220KB：集安全加解密、编解码与转义、文本与正则排版、时间与 Cron 计算、网络与系统运维、前端图像与标识生成等全场景工具于一体，满足日常开发高频需求。纯前端实现、universal 包、无原生 Sidecar。
+日常开发工具集合的 [DBX](https://github.com/t8y2/dbx) 插件——**沙箱离线运行，零联网**。54 款开发工具仅 <240KB：集安全加解密、编解码与转义、文本与正则排版、时间与 Cron 计算、网络与系统运维、前端图像与标识生成等全场景工具于一体，满足日常开发高频需求。纯前端实现、universal 包、无原生 Sidecar。
 
-![DBX >=0.6.19](https://img.shields.io/badge/DBX-%3E%3D0.6.19-blue) ![Platform universal](https://img.shields.io/badge/platform-universal-green) ![50 个工具](https://img.shields.io/badge/工具-50-orange) ![安装包 <220KB](https://img.shields.io/badge/安装包-<220KB-brightgreen) ![权限 host.storage, host.workbench](https://img.shields.io/badge/权限-host.storage%20%2B%20host.workbench-blueviolet)
+![DBX >=0.6.19](https://img.shields.io/badge/DBX-%3E%3D0.6.19-blue) ![Platform universal](https://img.shields.io/badge/platform-universal-green) ![54 个工具](https://img.shields.io/badge/工具-54-orange) ![安装包 <240KB](https://img.shields.io/badge/安装包-<240KB-brightgreen) ![权限 host.storage, host.workbench](https://img.shields.io/badge/权限-host.storage%20%2B%20host.workbench-blueviolet)
 
 <img width="2090" height="1412" alt="image" src="https://github.com/user-attachments/assets/7b43078d-d781-4e52-8449-9094872aba1e" />
 
@@ -42,6 +42,7 @@
 - **CSS 生成器**：可视化渐变（linear/radial/conic、多色标）与盒阴影生成，实时预览、一键复制 CSS
 - **文本行处理**：修剪、去空行、去重、A→Z/Z→A 排序、加行号、倒序——按固定流水线组合生效
 - **AES 加解密**：PBKDF2（10 万次，SHA-256）→ AES-256-GCM；输出 `base64(salt|iv|密文)`，GCM 标签可拒绝错误密码
+- **PBE 口令加密（PBEWithMD5AndDES）**：PBKDF1（MD5）+ DES-CBC + PKCS#5 口令加解密，与 Java `PBEWithMD5AndDES` 字节级兼容；口令字节可选 Java 低 8 位或 UTF-8，8 字节盐值，迭代次数可调
 - **chmod 计算器**：所有者/用户组/其他 rwx 勾选 ⇄ 八进制，实时符号表示（`rwxr-xr-x`），常用预设
 - **正则测试器**：表达式 + 标志位，匹配高亮预览、捕获组表格、替换预览
 - **Semver 版本比较**：按 semver.org 规则比较两个版本号、排序版本列表（含预发布号）
@@ -49,6 +50,9 @@
 - **RSA 密钥生成器**：RSA 密钥对（RSASSA / RSA-PSS / RSA-OAEP，2048–4096 位）导出 PEM/PKCS#8
 - **国密加解密（SM2/SM3/SM4）**：SM2 密钥对（Hex/Base64/PEM——PKCS#8、SPKI、SEC1），支持 C1C3C2 / C1C2C3 密文顺序、可选 `04` 前缀的加解密，原始 / DER 签名验签（可自定义 userId）；SM3 摘要与 HMAC；SM4 支持 ECB/CBC、PKCS#7 或无填充，文本 / Hex / Base64 输入输出
 - **SM2 + SM4 混合加密（信封）**：每次生成随机 SM4 密钥与 IV，密钥材料经 SM2 封装，HMAC-SM3 完整性校验，输出 JSON 信封
+- **JSJ 签名生成（Sm-Token）**：对排序后的参数、请求体与请求 URI 计算 SM3
+- **JSJ 国密混合加解密**：SM2 封装 SM4 密钥写入 `cr-ca-key`，请求体以 SM4-CBC/PKCS7（IV = 密钥）加密为 `encData`
+- **JSJ 防重放参数生成**：生成毫秒时间戳、UUID nonce 与 SM2 签名 JSON（`sign`），并提供 URL 编码后的查询参数
 - **证书解析器**：解析 X.509 PEM/DER 证书：主体/签发者、有效期、SAN、密钥用途、SHA-1/256 指纹
 - **IP 计算器**：IPv4 子网计算（网络/广播/可用主机/掩码/反掩码/范围属性/PTR）与子网划分；IPv6 压缩/展开、前缀、类型识别、ip6.arpa 反解
 - **Cron 表达式**：标准五段式 Cron 的人话描述，预览接下来的执行时间

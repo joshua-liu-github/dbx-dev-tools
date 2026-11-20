@@ -2,9 +2,9 @@
 
 [English](./README.md) | [中文](./README-zh.md)
 
-A collection of everyday developer utilities as a [DBX](https://github.com/t8y2/dbx) plugin — **runs offline in a sandbox with zero network calls**. 50 developer utilities in under 220KB: an all-in-one toolkit covering crypto & security, encoding, text & regex, time & Cron, network & DevOps, and frontend assets—built for everyday development needs. Pure frontend, universal package, no native sidecar.
+A collection of everyday developer utilities as a [DBX](https://github.com/t8y2/dbx) plugin — **runs offline in a sandbox with zero network calls**. 54 developer utilities in under 240KB: an all-in-one toolkit covering crypto & security, encoding, text & regex, time & Cron, network & DevOps, and frontend assets—built for everyday development needs. Pure frontend, universal package, no native sidecar.
 
-![DBX >=0.6.19](https://img.shields.io/badge/DBX-%3E%3D0.6.19-blue) ![Platform universal](https://img.shields.io/badge/platform-universal-green) ![50 tools](https://img.shields.io/badge/tools-50-orange) ![package <220KB](https://img.shields.io/badge/package-<220KB-brightgreen) ![permissions: host.storage, host.workbench](https://img.shields.io/badge/permissions-host.storage%20%2B%20host.workbench-blueviolet)
+![DBX >=0.6.19](https://img.shields.io/badge/DBX-%3E%3D0.6.19-blue) ![Platform universal](https://img.shields.io/badge/platform-universal-green) ![54 tools](https://img.shields.io/badge/tools-54-orange) ![package <240KB](https://img.shields.io/badge/package-<240KB-brightgreen) ![permissions: host.storage, host.workbench](https://img.shields.io/badge/permissions-host.storage%20%2B%20host.workbench-blueviolet)
 
 <img width="2086" height="1404" alt="image" src="https://github.com/user-attachments/assets/704901ab-eb26-4794-a62d-366b41360609" />
 
@@ -42,6 +42,7 @@ A collection of everyday developer utilities as a [DBX](https://github.com/t8y2/
 - **CSS Generator** — visual gradient (linear/radial/conic, multi-stop) and box-shadow builders with live preview and copyable CSS
 - **Line Operations** — trim, remove empty, dedupe, sort A→Z/Z→A, add line numbers, reverse — combined in a fixed pipeline
 - **AES Encrypt / Decrypt** — PBKDF2 (100k, SHA-256) → AES-256-GCM; output is `base64(salt|iv|ciphertext)`, GCM tag rejects wrong passwords
+- **PBE (PBEWithMD5AndDES)** — PBKDF1 (MD5) + DES-CBC + PKCS#5 password encryption, byte-compatible with Java `PBEWithMD5AndDES`; selectable Java low-8-bit or UTF-8 password encoding, 8-byte salt, configurable iterations
 - **Chmod Calculator** — owner/group/other rwx checkboxes ⇄ octal, live symbolic (`rwxr-xr-x`), common presets
 - **Regex Tester** — pattern + flags, highlighted match preview, capture-group table, replace preview
 - **Semver Compare** — compare two versions and sort version lists per semver.org rules (prerelease-aware)
@@ -49,6 +50,9 @@ A collection of everyday developer utilities as a [DBX](https://github.com/t8y2/
 - **RSA Key Generator** — RSA key pairs (RSASSA / RSA-PSS / RSA-OAEP, 2048–4096 bits) exported as PEM/PKCS#8
 - **SM2 / SM3 / SM4** — Chinese national crypto: SM2 key pairs (Hex/Base64/PEM — PKCS#8, SPKI, SEC1), encrypt/decrypt with C1C3C2 or C1C2C3 order and optional `04` prefix, sign/verify (raw or DER, custom userId); SM3 hash & HMAC; SM4 ECB/CBC with PKCS#7 or no padding and text/hex/Base64 I/O
 - **SM2 + SM4 Hybrid Encryption** — envelope encryption: random per-message SM4 key + IV, SM2-wrapped key material, HMAC-SM3 integrity tag, JSON envelope
+- **JSJ Request Signer (Sm-Token)** — Sm-Token request signing: SM3 over sorted parameters, request body and request URI
+- **JSJ SM2 + SM4 Encrypted Body** — mixed encryption for request bodies: SM2-wrapped SM4 key in `cr-ca-key`, payload encrypted with SM4-CBC/PKCS7 (IV = key) into `encData`
+- **JSJ Anti-Replay Params** — timestamp, UUID nonce and SM2-signed JSON (`sign`) for anti-replay checks, with URL-encoded query output
 - **Certificate Decoder** — parse X.509 PEM/DER: subject/issuer, validity, SAN, key usage, SHA-1/256 fingerprints
 - **IP Calculator** — IPv4 subnet math (network/broadcast/usable hosts/mask/wildcard/scope/PTR) with subnet splitting; IPv6 compress/expand, prefix, type detection, ip6.arpa PTR
 - **Cron Expression** — standard 5-field cron explained in words, with next-run preview

@@ -24,6 +24,7 @@ import DateCalcTool from "../tools/DateCalcTool.svelte";
 import ColorTool from "../tools/ColorTool.svelte";
 import LinesTool from "../tools/LinesTool.svelte";
 import AesTool from "../tools/AesTool.svelte";
+import PbeTool from "../tools/PbeTool.svelte";
 import ChmodTool from "../tools/ChmodTool.svelte";
 import RegexTool from "../tools/RegexTool.svelte";
 import SemverTool from "../tools/SemverTool.svelte";
@@ -31,6 +32,9 @@ import ImageCompTool from "../tools/ImageCompTool.svelte";
 import RsaTool from "../tools/RsaTool.svelte";
 import SmTool from "../tools/SmTool.svelte";
 import SmHybridTool from "../tools/SmHybridTool.svelte";
+import JsjSignTool from "../tools/JsjSignTool.svelte";
+import JsjMixTool from "../tools/JsjMixTool.svelte";
+import JsjReplayTool from "../tools/JsjReplayTool.svelte";
 import CertTool from "../tools/CertTool.svelte";
 import IpTool from "../tools/IpTool.svelte";
 import CronTool from "../tools/CronTool.svelte";
@@ -75,9 +79,13 @@ export const TOOLS = [
   { key: "hash", contributionId: "terry.devtools.hash", component: HashTool, tags: ["hash", "security", "digest"] },
   { key: "jwt", contributionId: "terry.devtools.jwt", component: JwtTool, tags: ["security", "parser", "token"] },
   { key: "aes", contributionId: "terry.devtools.aes", component: AesTool, tags: ["security", "crypto"] },
+  { key: "pbe", contributionId: "terry.devtools.pbe", component: PbeTool, tags: ["security", "crypto", "des", "pbe", "java"] },
   { key: "rsa", contributionId: "terry.devtools.rsa", component: RsaTool, tags: ["generator", "security", "crypto", "key"] },
   { key: "sm", contributionId: "terry.devtools.sm", component: SmTool, tags: ["security", "crypto", "chinese", "sm", "sm2", "sm3", "sm4"] },
   { key: "smhybrid", contributionId: "terry.devtools.smhybrid", component: SmHybridTool, tags: ["security", "crypto", "chinese", "sm", "sm2", "sm4", "hybrid"] },
+  { key: "jsjsign", contributionId: "terry.devtools.jsjsign", component: JsjSignTool, tags: ["security", "crypto", "chinese", "sm", "sm3", "sign", "jsj"] },
+  { key: "jsjmix", contributionId: "terry.devtools.jsjmix", component: JsjMixTool, tags: ["security", "crypto", "chinese", "sm", "sm2", "sm4", "hybrid", "jsj"] },
+  { key: "jsjreplay", contributionId: "terry.devtools.jsjreplay", component: JsjReplayTool, tags: ["security", "crypto", "chinese", "sm", "sm2", "sign", "replay", "jsj"] },
   { key: "cert", contributionId: "terry.devtools.cert", component: CertTool, tags: ["security", "parser", "certificate", "x509", "pem"] },
   { key: "totp", contributionId: "terry.devtools.totp", component: TotpTool, tags: ["security", "totp", "otp", "2fa"] },
   { key: "json", contributionId: "terry.devtools.json", component: JsonTool, tags: ["parser", "formatter", "text", "json"] },
